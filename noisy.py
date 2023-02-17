@@ -90,7 +90,8 @@ class Crawler(object):
         """
         regex = re.compile(
             r'^(?:http|ftp)s?://'  # http:// or https://
-            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+            # domain...
+            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
@@ -161,7 +162,8 @@ class Crawler(object):
             sub_links = self._extract_urls(sub_page, random_link)
 
             # sleep for a random amount of time
-            time.sleep(random.randrange(self._config["min_sleep"], self._config["max_sleep"]))
+            time.sleep(random.randrange(
+                self._config["min_sleep"], self._config["max_sleep"]))
 
             # make sure we have more than 1 link to pick from
             if len(sub_links) > 1:
@@ -173,7 +175,8 @@ class Crawler(object):
                 self._remove_and_blacklist(random_link)
 
         except (requests.exceptions.RequestException, UnicodeDecodeError):
-            logging.debug("Exception on URL: %s, removing from list and trying again!" % random_link)
+            logging.debug(
+                "Exception on URL: %s, removing from list and trying again!" % random_link)
             self._remove_and_blacklist(random_link)
 
         self._browse_from_links(depth + 1)
@@ -217,7 +220,8 @@ class Crawler(object):
         :return: boolean indicating whether the timeout has reached
         """
         is_timeout_set = self._config["timeout"] is not False  # False is set when no timeout is desired
-        end_time = self._start_time + datetime.timedelta(seconds=self._config["timeout"])
+        end_time = self._start_time + \
+            datetime.timedelta(seconds=self._config["timeout"])
         is_timed_out = datetime.datetime.now() >= end_time
 
         return is_timeout_set and is_timed_out
@@ -239,21 +243,26 @@ class Crawler(object):
 
             except (requests.exceptions.RequestException, UnicodeDecodeError):
                 logging.warning("Error connecting to root url: {}".format(url))
-                
+
             except MemoryError:
-                logging.warning("Error: content at url: {} is exhausting the memory".format(url))
+                logging.warning(
+                    "Error: content at url: {} is exhausting the memory".format(url))
 
             except LocationParseError:
-                logging.warning("Error encountered during parsing of: {}".format(url))
+                logging.warning(
+                    "Error encountered during parsing of: {}".format(url))
 
             except self.CrawlerTimedOut:
                 logging.info("Timeout has exceeded, exiting")
                 return
 
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log', metavar='-l', type=str, help='logging level', default='info')
-    parser.add_argument('--config', metavar='-c', required=True, type=str, help='config file')
+    parser.add_argument('--log', metavar='-l', type=str,
+                        help='logging level', default='info')
+    parser.add_argument('--config', metavar='-c',
+                        required=True, type=str, help='config file')
     parser.add_argument('--timeout', metavar='-t', required=False, type=int,
                         help='for how long the crawler should be running, in seconds', default=False)
     args = parser.parse_args()
