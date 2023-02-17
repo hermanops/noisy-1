@@ -1,4 +1,5 @@
-# Noisy 
+# Noisy
+
 [![CircleCI](https://circleci.com/gh/madereddy/noisy/tree/master.svg?style=shield)](https://circleci.com/gh/madereddy/noisy/tree/master)
 ![Docker Pulls][pulls]
 
@@ -14,30 +15,33 @@ These instructions will get you a copy of the project up and running on your loc
 
 Install `requests` if you do not have it already installed, using `pip`:
 
-```
+```python
 pip install requests
 ```
 
 ### Usage
 
 Clone the repository
-```
+
+```bash
 git clone https://github.com/madereddy/noisy.git
 ```
 
 Navigate into the `noisy` directory
-```
+
+```bash
 cd noisy
 ```
 
 Run the script
 
-```
+```bash
 python noisy.py --config config.json
 ```
 
 The program can accept a number of command line arguments:
-```
+
+```bash
 $ python noisy.py --help
 usage: noisy.py [-h] [--log -l] --config -c [--timeout -t]
 
@@ -47,10 +51,12 @@ optional arguments:
   --config -c   config file
   --timeout -t  for how long the crawler should be running, in seconds
 ```
+
 only the config file argument is required.
 
-###  Output
-```
+### Output
+
+```bash
 $ docker run -it noisy --config config.json --log debug
 DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 4chan.org:80
 DEBUG:urllib3.connectionpool:http://4chan.org:80 "GET / HTTP/1.1" 301 None
@@ -80,18 +86,21 @@ DEBUG:urllib3.connectionpool:https://www.reddit.com:443 "GET /user/Saditon HTTP/
 
 1. Pull the container and run it:
 
-`docker run -it madereddy/noisy --config config.json`
+   ```bash
+   docker run -it madereddy/noisy --config config.json
+   ```
 
 2. Use a compose file inside a docker-compose.yml or portainer stack
 
-````````````
-version: "2"
-services:
-  noisy:
-    image: madereddy/noisy:latest
-    container_name: noisy
-    restart: always
-````````````
+   ````````````docker
+   version: "2"
+   services:
+     noisy:
+       image: madereddy/noisy:latest
+       container_name: noisy
+       restart: always
+   ````````````
+
 ## Some examples
 
 Some edge-cases examples are available on the `examples` folder. You can read more there [examples/README.md](examples/README.md).
@@ -99,7 +108,7 @@ Some edge-cases examples are available on the `examples` folder. You can read mo
 ## Authors
 
 * **Itay Hury** - *Initial work* - [1tayH](https://github.com/1tayH)
-* **madereddy**- *Docker build + Python Upgrade* 
+* **madereddy**- *Docker build + Python Upgrade*
 
 ## License
 
